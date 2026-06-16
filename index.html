@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ROAN // Job Search OS</title>
+    <!-- Tailwind CSS for high-fidelity minimalist UI styling -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -16,6 +17,7 @@
 </head>
 <body class="bg-[#0b0f19] text-slate-200 min-h-screen relative overflow-x-hidden">
 
+    <!-- LOGIN SCREEN -->
     <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#0b0f19] px-4">
         <div class="bg-[#131c2e] border border-slate-800 rounded-2xl w-full max-w-md p-8 shadow-2xl transition-all">
             <div class="flex flex-col items-center mb-8">
@@ -26,7 +28,7 @@
                 <p class="text-slate-400 text-sm mt-1">Authorized Dual-User Workspace Terminal</p>
             </div>
 
-            <form onsubmit="handleLogin(e)">
+            <form id="loginFormEngine">
                 <div class="space-y-5">
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">User Identifier ID</label>
@@ -37,6 +39,7 @@
                         <input type="password" id="password" required placeholder="••••••••" class="w-full bg-[#0b0f19] border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors placeholder-slate-600">
                     </div>
 
+                    <!-- Live Dynamic Error Message -->
                     <div id="loginError" class="hidden bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm rounded-xl p-3 flex items-center gap-2">
                         <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                         <span>Invalid identity key or credentials. Try again.</span>
@@ -50,7 +53,9 @@
         </div>
     </div>
 
+    <!-- MAIN APP INTERFACE -->
     <div id="appScreen" class="hidden min-h-screen flex flex-col">
+        <!-- TOP CONTROL PANEL HIERARCHY -->
         <header class="bg-[#131c2e] border-b border-slate-800 sticky top-0 z-40 px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-md">
             <div class="flex items-center gap-4">
                 <div class="bg-indigo-600/10 text-indigo-400 p-2 rounded-xl border border-indigo-500/20 hidden sm:block">
@@ -66,6 +71,7 @@
                 </div>
             </div>
 
+            <!-- SEARCH AND LOCKOUT OPTIONS -->
             <div class="flex items-center gap-3 w-full sm:w-auto">
                 <div class="relative w-full sm:w-64">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 pointer-events-none">
@@ -79,15 +85,20 @@
             </div>
         </header>
 
+        <!-- APP ENGINE BODY (TAB ROW + CONTENT LAYOUT) -->
         <div class="flex-1 flex flex-col lg:flex-row">
+            <!-- TAB CONTROLLER BAR -->
             <aside class="bg-[#111827] border-b lg:border-b-0 lg:border-r border-slate-800 lg:w-64 shrink-0 p-4">
                 <nav class="flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-1 pb-2 lg:pb-0" id="tabsNav">
-                    </nav>
+                    <!-- Loaded dynamically via script -->
+                </nav>
             </aside>
 
+            <!-- CORE DATA MODULE PANEL -->
             <main class="flex-1 p-6 overflow-x-auto">
                 <div class="bg-[#131c2e] border border-slate-800 rounded-2xl shadow-xl flex flex-col min-h-[500px]">
                     
+                    <!-- DYNAMIC SUB-HEADER BAR FOR ACTIONS -->
                     <div class="p-4 border-b border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#162035] rounded-t-2xl">
                         <div>
                             <h3 id="activeTabTitle" class="text-base font-bold text-white uppercase tracking-wide">TAB MODULE</h3>
@@ -103,6 +114,7 @@
                         </div>
                     </div>
 
+                    <!-- WORKFLOW INSTRUMENT COMPONENT CONTAINER -->
                     <div id="workflowSection" class="p-6 border-b border-slate-800 bg-[#19243c]/40 hidden">
                         <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-3">Daily Strategic Execution Order</h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 text-xs">
@@ -125,14 +137,18 @@
                         </div>
                     </div>
 
+                    <!-- INTERACTIVE LIVE TABLE SECTION -->
                     <div class="flex-1 overflow-auto max-h-[600px] relative">
                         <table class="w-full text-left text-xs border-collapse" id="mainDataTable">
                             <thead class="sticky top-0 bg-[#1e293b] text-slate-300 uppercase tracking-wider font-semibold border-b border-slate-800 z-10" id="tableHeaderRow">
-                                </thead>
+                                <!-- Generated dynamically -->
+                            </thead>
                             <tbody class="divide-y divide-slate-800/60" id="tableBodyRows">
-                                </tbody>
+                                <!-- Generated dynamically -->
+                            </tbody>
                         </table>
                         
+                        <!-- CLEAN FALLBACK SCREEN FOR BLANK DATASETS -->
                         <div id="blankSlateDisplay" class="hidden flex flex-col items-center justify-center p-12 text-center text-slate-500 space-y-3">
                             <svg class="w-12 h-12 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m-9 1V4a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg>
                             <div>
@@ -146,18 +162,20 @@
         </div>
     </div>
 
+    <!-- HIGH-FIDELITY ENTRY / EDITING DATA MODAL BOX -->
     <div id="dataModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden items-center justify-center px-4 py-6">
-        <div class="bg-[#131c2e] border border-slate-800 w-full max-w-2xl rounded-2xl max-h-[90vh] flex flex-col shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+        <div class="bg-[#131c2e] border border-slate-800 w-full max-w-2xl rounded-2xl max-h-[90vh] flex flex-col shadow-2xl">
             <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-[#162035] rounded-t-2xl">
                 <h3 id="modalTitle" class="text-sm font-bold uppercase tracking-wider text-white">Record System Insertion</h3>
                 <button onclick="closeDataModal()" class="text-slate-400 hover:text-white cursor-pointer text-lg">&times;</button>
             </div>
             
-            <form id="modalForm" onsubmit="saveModalData(event)" class="flex flex-col flex-1 overflow-hidden">
+            <form id="modalForm" class="flex flex-col flex-1 overflow-hidden">
                 <input type="hidden" id="editRowIndex">
                 
                 <div class="p-6 overflow-y-auto space-y-4 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 items-start" id="modalFormFields">
-                    </div>
+                    <!-- Injected via JavaScript based on Active Columns -->
+                </div>
 
                 <div class="p-4 border-t border-slate-800 bg-[#111827] flex justify-end gap-2 rounded-b-2xl">
                     <button type="button" onclick="closeDataModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-lg transition-all cursor-pointer">Cancel</button>
@@ -167,6 +185,7 @@
         </div>
     </div>
 
+    <!-- PREMIUM HIGH-FIDELITY CONFIRMATION MODAL -->
     <div id="confirmModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden items-center justify-center px-4">
         <div class="bg-[#131c2e] border border-slate-800 max-w-sm w-full rounded-2xl p-6 shadow-2xl text-center space-y-4">
             <div class="mx-auto w-12 h-12 bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center border border-rose-500/20">
@@ -183,6 +202,7 @@
         </div>
     </div>
 
+    <!-- SYSTEM CORE RUNTIME JAVASCRIPT ENGINE -->
     <script>
         // Plaintext credentials for robust deployment
         const DUAL_USERS = {
@@ -239,29 +259,55 @@
         let localOSStore = {};
         let deleteTargetIndex = null;
 
-        // AUTHENTICATION INTERACTIVE LOGIC
-        function handleLogin(e) {
-            // Support both standard form event submission and customized form executions
-            if(e && e.preventDefault) e.preventDefault();
-            else if(window.event) window.event.returnValue = false;
+        // BIND EVENT LISTENERS CORRECTLY ON LOAD
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginFormEngine');
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const userIn = document.getElementById('username').value.trim().toLowerCase();
+                    const passIn = document.getElementById('password').value.trim();
+                    const errBox = document.getElementById('loginError');
 
-            const userIn = document.getElementById('username').value.trim().toLowerCase();
-            const passIn = document.getElementById('password').value.trim();
-            const errBox = document.getElementById('loginError');
-
-            if (DUAL_USERS[userIn] && DUAL_USERS[userIn] === passIn) {
-                currentUser = userIn;
-                errBox.classList.add('hidden');
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('appScreen').classList.remove('hidden');
-                document.getElementById('userDisplayTag').textContent = `OPERATOR: ${currentUser.toUpperCase()}`;
-                
-                initWorkspace();
-            } else {
-                errBox.classList.remove('hidden');
+                    if (DUAL_USERS[userIn] && DUAL_USERS[userIn] === passIn) {
+                        currentUser = userIn;
+                        errBox.classList.add('hidden');
+                        document.getElementById('loginScreen').classList.add('hidden');
+                        document.getElementById('appScreen').classList.remove('hidden');
+                        document.getElementById('userDisplayTag').textContent = `OPERATOR: ${currentUser.toUpperCase()}`;
+                        
+                        initWorkspace();
+                    } else {
+                        errBox.classList.remove('hidden');
+                    }
+                });
             }
-            return false;
-        }
+
+            const dataForm = document.getElementById('modalForm');
+            if (dataForm) {
+                dataForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const indexVal = document.getElementById('editRowIndex').value;
+                    const currentTabConfig = SYSTEM_TABS[currentTab];
+                    let rowObj = {};
+
+                    currentTabConfig.columns.forEach(col => {
+                        const element = document.getElementById(`field_${col.replace(/\s+/g, '_')}`);
+                        if (element) rowObj[col] = element.value.trim();
+                    });
+
+                    if (indexVal === "") {
+                        localOSStore[currentTab].push(rowObj);
+                    } else {
+                        localOSStore[currentTab][parseInt(indexVal)] = rowObj;
+                    }
+
+                    commitToDisk();
+                    closeDataModal();
+                    renderTableGrid();
+                });
+            }
+        });
 
         function handleLogout() {
             currentUser = "";
@@ -271,14 +317,12 @@
             document.getElementById('loginScreen').classList.remove('hidden');
         }
 
-        // WORKSPACE STACK HOOKS & PARSERS
         function initWorkspace() {
             const storageKey = `roan_os_data_${currentUser}`;
             const archivedData = localStorage.getItem(storageKey);
             
             localOSStore = archivedData ? JSON.parse(archivedData) : {};
             
-            // Generate basic empty structure if it doesn't exist
             Object.keys(SYSTEM_TABS).forEach(tab => {
                 if (!localOSStore[tab]) localOSStore[tab] = [];
             });
@@ -292,7 +336,6 @@
             localStorage.setItem(storageKey, JSON.stringify(localOSStore));
         }
 
-        // INTERFACE GENERATORS
         function generateTabSelectors() {
             const nav = document.getElementById('tabsNav');
             nav.innerHTML = "";
@@ -301,7 +344,6 @@
                 const btn = document.createElement('button');
                 btn.className = `tab-btn text-left px-4 py-2.5 rounded-xl text-xs font-medium transition-all flex items-center justify-between cursor-pointer whitespace-nowrap lg:whitespace-normal shrink-0 ${tabKey === currentTab ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/10' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'}`;
                 
-                // Capitalize string label cleanly
                 const label = tabKey.replace('_', ' ').toUpperCase();
                 btn.innerHTML = `<span>${label}</span>`;
                 btn.onclick = () => switchTab(tabKey);
@@ -312,7 +354,6 @@
         function switchTab(tabKey) {
             currentTab = tabKey;
             
-            // Handle visual button swapping state
             document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
                 const key = Object.keys(SYSTEM_TABS)[idx];
                 if(key === currentTab) {
@@ -322,11 +363,9 @@
                 }
             });
 
-            // Update panel text descriptions
             document.getElementById('activeTabTitle').textContent = SYSTEM_TABS[tabKey].title;
             document.getElementById('activeTabDesc').textContent = SYSTEM_TABS[tabKey].desc;
 
-            // Toggle daily instruction guide header on dashboard view
             const workflowGrid = document.getElementById('workflowSection');
             if(tabKey === 'applications') workflowGrid.classList.remove('hidden');
             else workflowGrid.classList.add('hidden');
@@ -339,26 +378,22 @@
             const currentTabConfig = SYSTEM_TABS[currentTab];
             const dataset = filteredRows || localOSStore[currentTab] || [];
 
-            // 1. Build Header Elements
             const headerRow = document.getElementById('tableHeaderRow');
             headerRow.innerHTML = "";
             
             const trHead = document.createElement('tr');
-            // Data dimension columns mapping
             currentTabConfig.columns.forEach(col => {
                 const th = document.createElement('th');
                 th.className = "px-4 py-3 text-left font-semibold border-b border-slate-800 tracking-wider whitespace-nowrap text-[11px]";
                 th.textContent = col;
                 trHead.appendChild(th);
             });
-            // Admin action controls dimension column
             const thAction = document.createElement('th');
             thAction.className = "px-4 py-3 text-right font-semibold border-b border-slate-800 tracking-wider text-[11px] w-24";
             thAction.textContent = "Actions";
             trHead.appendChild(thAction);
             headerRow.appendChild(trHead);
 
-            // 2. Build Rows Elements
             const bodyRows = document.getElementById('tableBodyRows');
             bodyRows.innerHTML = "";
 
@@ -370,17 +405,14 @@
                 blankSlate.classList.add('hidden');
             }
 
-            // Detect current calendar metrics to trace immediate overdue flags
             const currentDateTimestamp = new Date().setHours(0,0,0,0);
 
             dataset.forEach((record, idx) => {
                 const actualIndex = filteredRows ? record._originalIndex : idx;
                 const tr = document.createElement('tr');
                 
-                // Base minimal stripe class grouping
                 let rowBgClass = idx % 2 === 0 ? 'bg-[#131c2e] hover:bg-[#18233c]' : 'bg-[#162137] hover:bg-[#1b2944]';
                 
-                // CONDITIONAL HIGHLIGHT COUPLING ARCHITECTURE
                 if (record["Status"] === "Interview") {
                     rowBgClass = "bg-emerald-950/40 hover:bg-emerald-900/40 text-emerald-200 border-l-2 border-emerald-500";
                 } else if (record["Follow-up Date"]) {
@@ -392,13 +424,11 @@
 
                 tr.className = `${rowBgClass} transition-colors border-b border-slate-800/40`;
 
-                // Render matching entry columns
                 currentTabConfig.columns.forEach(col => {
                     const td = document.createElement('td');
                     td.className = "px-4 py-3 max-w-xs truncate text-xs font-medium";
                     
                     const cellVal = record[col] || "";
-                    // Auto wrap formatting for link metrics strings
                     if (typeof cellVal === 'string' && (cellVal.startsWith('http://') || cellVal.startsWith('https://'))) {
                         td.innerHTML = `<a href="${cellVal}" target="_blank" class="text-indigo-400 hover:underline flex items-center gap-0.5 truncate">Link ↗</a>`;
                     } else {
@@ -407,7 +437,6 @@
                     tr.appendChild(td);
                 });
 
-                // Generate administrative actions configuration cells
                 const tdAction = document.createElement('td');
                 tdAction.className = "px-4 py-3 text-right space-x-1.5 whitespace-nowrap";
                 tdAction.innerHTML = `
@@ -419,7 +448,6 @@
             });
         }
 
-        // GLOBAL FAST-FILTER INPUT SEARCH LOGIC
         function filterActiveTable() {
             const query = document.getElementById('globalSearch').value.toLowerCase().trim();
             const fullDataset = localOSStore[currentTab] || [];
@@ -441,7 +469,6 @@
             renderTableGrid(filtered);
         }
 
-        // MODAL MANAGEMENT BOX CONTROLS
         function openAddModal() {
             document.getElementById('modalTitle').textContent = `Add New ${SYSTEM_TABS[currentTab].title} Record`;
             document.getElementById('editRowIndex').value = "";
@@ -486,13 +513,11 @@
                 const fieldId = `field_${col.replace(/\s+/g, '_')}`;
                 wrapper.appendChild(label);
 
-                // Use input options conditional processing paths based on validation types
                 if (currentTabConfig.dropdowns && currentTabConfig.dropdowns[col]) {
                     const select = document.createElement('select');
                     select.id = fieldId;
                     select.className = "bg-[#0b0f19] border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 w-full";
                     
-                    // First empty option default
                     const optEmpty = document.createElement('option');
                     optEmpty.value = "";
                     optEmpty.textContent = `-- Select ${col} --`;
@@ -510,7 +535,6 @@
                     input.id = fieldId;
                     input.className = "bg-[#0b0f19] border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 w-full";
                     
-                    // Type checking parameters mapping rules
                     if (col.toLowerCase().includes('date')) {
                         input.type = "date";
                     } else if (col.toLowerCase().includes('link') || col.toLowerCase().includes('url') || col.toLowerCase().includes('website')) {
@@ -525,33 +549,6 @@
             });
         }
 
-        function saveModalData(e) {
-            if(e && e.preventDefault) e.preventDefault();
-            
-            const indexVal = document.getElementById('editRowIndex').value;
-            const currentTabConfig = SYSTEM_TABS[currentTab];
-            let rowObj = {};
-
-            currentTabConfig.columns.forEach(col => {
-                const element = document.getElementById(`field_${col.replace(/\s+/g, '_')}`);
-                if (element) rowObj[col] = element.value.trim();
-            });
-
-            if (indexVal === "") {
-                // New record generation mode
-                localOSStore[currentTab].push(rowObj);
-            } else {
-                // Inline modification rewrite mode
-                localOSStore[currentTab][parseInt(indexVal)] = rowObj;
-            }
-
-            commitToDisk();
-            closeDataModal();
-            renderTableGrid();
-            return false;
-        }
-
-        // CONFIRM DIALOG PURGE HANDLERS
         function triggerDeleteRecord(index) {
             deleteTargetIndex = index;
             document.getElementById('confirmDeleteBtn').onclick = executeRowPurge;
@@ -572,7 +569,6 @@
             }
         }
 
-        // ONE-CLICK DATA PORTABILITY SYSTEM (EXPORT ENGINE)
         function exportToCSV() {
             const columns = SYSTEM_TABS[currentTab].columns;
             const rows = localOSStore[currentTab] || [];
@@ -583,10 +579,8 @@
             }
 
             let csvLines = [];
-            // Parse headers list element
             csvLines.push(columns.map(col => `"${col.replace(/"/g, '""')}"`).join(','));
             
-            // Parse item dataset entries mapping matrices
             rows.forEach(row => {
                 let rowLine = columns.map(col => {
                     let val = row[col] || "";
