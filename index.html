@@ -1,1247 +1,611 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-900">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROAN Job Search OS</title>
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Font - Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Professional UI Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            900: '#312e81',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <title>ROAN // Job Search OS</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        /* Custom scrollbar styling for elite visual premium feel */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1e293b;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #475569;
-            border-radius: 9999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #6366f1;
-        }
-        
-        /* Persistent Table Header lock rules */
-        .sheet-container {
-            max-height: calc(100vh - 280px);
-            overflow-y: auto;
-            overflow-x: auto;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
 </head>
-<body class="h-full flex flex-col font-sans text-slate-100 bg-slate-950 antialiased selection:bg-brand-500 selection:text-white">
+<body class="bg-[#0b0f19] text-slate-200 min-h-screen relative overflow-x-hidden">
 
-    <!-- SECURE PRE-AUTHENTICATION LOGIN WINDOW -->
-    <div id="login-gate" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950 px-4">
-        <!-- Abstract Tech Background Decor -->
-        <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <div class="absolute -top-[40%] -left-[20%] w-[80%] h-[80%] bg-brand-900/20 rounded-full filter blur-[120px]"></div>
-            <div class="absolute -bottom-[40%] -right-[20%] w-[80%] h-[80%] bg-emerald-950/10 rounded-full filter blur-[120px]"></div>
-        </div>
-
-        <div class="relative w-full max-w-md bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl p-8 shadow-2xl transition-all duration-300">
-            <div class="text-center mb-8">
-                <div class="inline-flex p-3 bg-brand-600/15 text-brand-500 rounded-2xl border border-brand-500/20 mb-4">
-                    <i class="fa-solid fa-terminal text-3xl"></i>
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#0b0f19] px-4">
+        <div class="bg-[#131c2e] border border-slate-800 rounded-2xl w-full max-w-md p-8 shadow-2xl transition-all">
+            <div class="flex flex-col items-center mb-8">
+                <div class="bg-indigo-600/20 text-indigo-400 p-4 rounded-2xl border border-indigo-500/30 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 002-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 </div>
-                <h1 class="text-2xl font-black tracking-tight text-white uppercase">ROAN // JOB SEARCH OS</h1>
-                <p class="text-xs text-slate-400 mt-1">Authorized Hashed Entry Console</p>
+                <h1 class="text-2xl font-bold tracking-tight text-white uppercase text-center">ROAN // JOB SEARCH OS</h1>
+                <p class="text-slate-400 text-sm mt-1">Authorized Dual-User Workspace Terminal</p>
             </div>
 
-            <!-- Login Input Fields Form -->
-            <form id="login-form" onsubmit="handleAuthLogin(event)" class="space-y-5">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">User Identifier ID</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500">
-                            <i class="fa-solid fa-user text-sm"></i>
-                        </span>
-                        <input type="text" id="login-username" required placeholder="Enter Workspace ID..." class="block w-full pl-10 pr-4 py-3 bg-slate-950/50 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 placeholder-slate-600 transition">
+            <form onsubmit="handleLogin(e)">
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">User Identifier ID</label>
+                        <input type="text" id="username" required autocomplete="off" placeholder="e.g., roan" class="w-full bg-[#0b0f19] border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors placeholder-slate-600">
                     </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Secure Passkey</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500">
-                            <i class="fa-solid fa-lock text-sm"></i>
-                        </span>
-                        <input type="password" id="login-password" required placeholder="••••••••" class="block w-full pl-10 pr-4 py-3 bg-slate-950/50 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 placeholder-slate-600 transition">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Secure Passkey</label>
+                        <input type="password" id="password" required placeholder="••••••••" class="w-full bg-[#0b0f19] border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors placeholder-slate-600">
                     </div>
-                </div>
 
-                <!-- Custom Credential Feedback Field -->
-                <div id="login-error-card" class="hidden flex items-center gap-2 p-3 bg-rose-950/50 border border-rose-900/50 rounded-xl text-xs text-rose-300">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                    <span>Invalid identity key or credentials. Try again.</span>
-                </div>
+                    <div id="loginError" class="hidden bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm rounded-xl p-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        <span>Invalid identity key or credentials. Try again.</span>
+                    </div>
 
-                <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-500 active:bg-brand-700 text-white text-sm font-bold rounded-xl shadow-lg transition duration-150 flex items-center justify-center gap-2">
-                    <span>Unlock Operating Console</span>
-                    <i class="fa-solid fa-right-to-bracket"></i>
-                </button>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3 rounded-xl shadow-lg shadow-indigo-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer font-semibold">
+                        Unlock Operating Console ➔
+                    </button>
+                </div>
             </form>
-
-            <!-- Pre-made Credentials Card (Plaintext passwords removed for secure GitHub hosting) -->
-            <div class="mt-8 pt-6 border-t border-slate-800/60 text-center">
-                <p class="text-xs text-slate-400 font-bold mb-3"><i class="fa-solid fa-shield-halved text-brand-500 mr-1.5"></i>Secure Workspace Mode Active</p>
-                <div class="text-[11px] text-slate-400 bg-slate-950/60 py-3 px-4 rounded-xl border border-slate-800/55 leading-relaxed text-left">
-                    Plaintext passwords have been stripped from the system code to enable safe hosting on GitHub. Use your private credentials to log in.
-                </div>
-            </div>
         </div>
     </div>
 
-    <!-- CORE OPERATION WORKSPACE WRAPPER (HIDDEN UNTIL AUTHENTICATED) -->
-    <div id="main-application" class="hidden flex-1 flex-col min-h-0">
-        
-        <!-- Premium Navigation and Metrics Banner Header -->
-        <header class="bg-slate-900/90 border-b border-slate-800 backdrop-blur shrink-0 shadow-xl">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-20 py-3">
-                    
-                    <!-- App Identity Branding -->
-                    <div class="flex items-center space-x-3.5">
-                        <div class="bg-brand-600 p-2.5 rounded-xl shadow-md flex items-center justify-center border border-brand-500/20">
-                            <i class="fa-solid fa-rocket text-xl text-white"></i>
-                        </div>
-                        <div>
-                            <h1 class="text-md font-extrabold tracking-wider text-white uppercase flex items-center gap-2">
-                                <span>ROAN</span>
-                                <span class="text-xs bg-slate-800 text-brand-400 px-2 py-0.5 rounded border border-slate-700">JOB SEARCH OS</span>
-                            </h1>
-                            <div class="text-xs font-semibold text-slate-400 flex items-center gap-2">
-                                <span class="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>
-                                <span>OPERATOR:</span>
-                                <span id="operator-badge" class="font-bold text-white uppercase tracking-wider bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700">None</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Dynamic Real-time Metric Aggregation Blocks -->
-                    <div class="hidden lg:flex items-center space-x-6 text-xs font-semibold">
-                        <div class="text-right border-r border-slate-800 pr-5">
-                            <p class="text-[10px] text-slate-400 uppercase tracking-widest">My Applications</p>
-                            <p class="text-lg font-black text-brand-400" id="stat-total-apps">0</p>
-                        </div>
-                        <div class="text-right border-r border-slate-800 pr-5">
-                            <p class="text-[10px] text-slate-400 uppercase tracking-widest">Active Interviews</p>
-                            <p class="text-lg font-black text-emerald-400" id="stat-active-interviews">0</p>
-                        </div>
-                        <div class="text-right pr-2">
-                            <p class="text-[10px] text-slate-400 uppercase tracking-widest">Pending Actions</p>
-                            <p class="text-lg font-black text-rose-400" id="stat-pending-actions">0</p>
-                        </div>
-                    </div>
-
-                    <!-- App Quick Session Controls -->
-                    <div class="flex items-center space-x-2">
-                        <button onclick="exportCurrentTabToCSV()" class="inline-flex items-center px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg border border-slate-750 transition" title="Download spreadsheet tab data to CSV">
-                            <i class="fa-solid fa-file-csv mr-2 text-emerald-400"></i> Export Tab
-                        </button>
-                        <button onclick="triggerResetConfirmation()" class="inline-flex items-center px-3 py-2 bg-rose-950/20 hover:bg-rose-900/40 text-rose-300 text-xs font-bold rounded-lg border border-rose-900/50 transition" title="Clear profile workspace database back to empty">
-                            <i class="fa-solid fa-trash-arrow-up mr-2"></i> Clean Sheet
-                        </button>
-                        <button onclick="handleLogout()" class="inline-flex items-center px-3 py-2 bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-bold rounded-lg border border-slate-800 transition" title="Lock the console session">
-                            <i class="fa-solid fa-power-off text-rose-500"></i>
-                        </button>
+    <div id="appScreen" class="hidden min-h-screen flex flex-col">
+        <header class="bg-[#131c2e] border-b border-slate-800 sticky top-0 z-40 px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-md">
+            <div class="flex items-center gap-4">
+                <div class="bg-indigo-600/10 text-indigo-400 p-2 rounded-xl border border-indigo-500/20 hidden sm:block">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold text-white tracking-wide uppercase">ROAN // JOB SEARCH OS</h2>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span id="userDisplayTag" class="text-xs font-mono font-bold bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded border border-indigo-500/30">OPERATOR: UNSET</span>
+                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                        <span class="text-[10px] text-slate-400 uppercase font-medium">Isolated Encryption Active</span>
                     </div>
                 </div>
+            </div>
+
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <div class="relative w-full sm:w-64">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 pointer-events-none">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </span>
+                    <input type="text" id="globalSearch" oninput="filterActiveTable()" placeholder="Filter active view..." class="w-full bg-[#0b0f19] border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors placeholder-slate-500">
+                </div>
+                <button onclick="handleLogout()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-4 py-2 rounded-xl text-sm font-medium border border-slate-700 transition-all flex items-center gap-1.5 cursor-pointer">
+                    Lock System
+                </button>
             </div>
         </header>
 
-        <!-- Main Navigation & Workspace Grid -->
-        <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col min-h-0">
-            
-            <!-- Sleek Tab Selection Switchboard Grid -->
-            <div class="bg-slate-900 p-1.5 rounded-xl border border-slate-800 shadow-lg flex flex-wrap gap-1.5 shrink-0 mb-6">
-                <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="flex-1 min-w-[130px] inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-150 bg-brand-600 text-white shadow-md border border-brand-500/20">
-                    <i class="fa-solid fa-square-poll-vertical mr-2 text-indigo-200"></i> Daily Workflow
-                </button>
-                <button onclick="switchTab('applications')" id="tab-btn-applications" class="flex-1 min-w-[130px] inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-150 text-slate-400 hover:bg-slate-800 hover:text-white">
-                    <i class="fa-solid fa-list-check mr-2"></i> 1. Applications
-                </button>
-                <button onclick="switchTab('companies')" id="tab-btn-companies" class="flex-1 min-w-[130px] inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-150 text-slate-400 hover:bg-slate-800 hover:text-white">
-                    <i class="fa-solid fa-building-user mr-2"></i> 2. Companies
-                </button>
-                <button onclick="switchTab('keywords')" id="tab-btn-keywords" class="flex-1 min-w-[130px] inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-150 text-slate-400 hover:bg-slate-800 hover:text-white">
-                    <i class="fa-solid fa-magnifying-glass-arrow-right mr-2"></i> 3. Searches
-                </button>
-                <button onclick="switchTab('weekly')" id="tab-btn-weekly" class="flex-1 min-w-[130px] inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-150 text-slate-400 hover:bg-slate-800 hover:text-white">
-                    <i class="fa-solid fa-calendar-days mr-2"></i> 4. Weekly Plan
-                </button>
-                <button onclick="switchTab('linkedin')" id="tab-btn-linkedin" class="flex-1 min-w-[130px] inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-150 text-slate-400 hover:bg-slate-800 hover:text-white">
-                    <i class="fa-brands fa-linkedin-in mr-2"></i> 5. LinkedIn Content
-                </button>
-                <button onclick="switchTab('resumes')" id="tab-btn-resumes" class="flex-1 min-w-[130px] inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-150 text-slate-400 hover:bg-slate-800 hover:text-white">
-                    <i class="fa-solid fa-file-pdf mr-2"></i> 6. CV Library
-                </button>
-                <button onclick="switchTab('interviews')" id="tab-btn-interviews" class="flex-1 min-w-[130px] inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-150 text-slate-400 hover:bg-slate-800 hover:text-white">
-                    <i class="fa-solid fa-clipboard-question mr-2"></i> 7. Interview Prep
-                </button>
-            </div>
+        <div class="flex-1 flex flex-col lg:flex-row">
+            <aside class="bg-[#111827] border-b lg:border-b-0 lg:border-r border-slate-800 lg:w-64 shrink-0 p-4">
+                <nav class="flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-1 pb-2 lg:pb-0" id="tabsNav">
+                    </nav>
+            </aside>
 
-            <!-- Dynamic Workbench Screen Display Area -->
-            <div class="flex-1 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl flex flex-col min-h-0 overflow-hidden relative">
-                
-                <!-- Shared Spreadsheet Table Control Tool Bar -->
-                <div id="table-toolbar" class="hidden bg-slate-900/60 border-b border-slate-800/80 px-6 py-4 sm:flex sm:items-center sm:justify-between gap-4 shrink-0">
-                    <div class="relative flex-1 max-w-md">
-                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                            <i class="fa-solid fa-filter text-xs"></i>
-                        </div>
-                        <input type="text" id="sheet-global-search" oninput="applyFiltering()" placeholder="Live query search current column items..." class="block w-full pl-9 pr-4 py-2 bg-slate-950/80 border border-slate-800 rounded-xl text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition">
-                    </div>
+            <main class="flex-1 p-6 overflow-x-auto">
+                <div class="bg-[#131c2e] border border-slate-800 rounded-2xl shadow-xl flex flex-col min-h-[500px]">
                     
-                    <div class="flex items-center mt-3 sm:mt-0">
-                        <button onclick="triggerAddRowModal()" class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 bg-brand-600 hover:bg-brand-500 active:bg-brand-700 text-white text-xs font-bold rounded-xl shadow transition duration-150">
-                            <i class="fa-solid fa-plus mr-2"></i> Add Record Row
-                        </button>
-                    </div>
-                </div>
-
-                <!-- SCREEN VIEW 0: Dashboard & Active Workflow Execution -->
-                <div id="view-dashboard" class="flex-1 overflow-y-auto p-6 space-y-8">
-                    <!-- Dashboard Landing Pitch -->
-                    <div class="border-b border-slate-800 pb-5">
-                        <h2 class="text-xl font-black text-white tracking-wider flex items-center gap-2">
-                            <span>Workspace Central Mission Terminal</span>
-                            <span class="animate-pulse h-2 w-2 rounded-full bg-indigo-500"></span>
-                        </h2>
-                        <p class="text-xs text-slate-400 mt-1">Sourcing high-yielding Technical PM, Engineering, and AI Integration positions in India (🇮🇳), the UK (🇬🇧), and Globally.</p>
+                    <div class="p-4 border-b border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#162035] rounded-t-2xl">
+                        <div>
+                            <h3 id="activeTabTitle" class="text-base font-bold text-white uppercase tracking-wide">TAB MODULE</h3>
+                            <p id="activeTabDesc" class="text-xs text-slate-400 mt-0.5">Manage module dimensions here.</p>
+                        </div>
+                        <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                            <button onclick="exportToCSV()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold px-3 py-2 rounded-lg border border-slate-700 transition-all cursor-pointer">
+                                Export CSV
+                            </button>
+                            <button id="addRecordBtn" onclick="openAddModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-lg shadow-indigo-600/10 transition-all flex items-center gap-1 cursor-pointer">
+                                ➕ Add Record
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Action Checklists & Sourcing Metrics -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-2 bg-slate-950/80 border border-slate-800/80 p-6 rounded-2xl relative overflow-hidden">
-                            <h3 class="text-xs font-black tracking-widest text-brand-400 uppercase mb-4 flex items-center gap-2">
-                                <i class="fa-solid fa-list-check"></i> Daily Production Workflow Checklist
-                            </h3>
-                            
-                            <div class="space-y-3" id="checklist-container">
-                                <!-- Rendered on initialization -->
+                    <div id="workflowSection" class="p-6 border-b border-slate-800 bg-[#19243c]/40 hidden">
+                        <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-3">Daily Strategic Execution Order</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 text-xs">
+                            <div class="bg-[#0b0f19] p-3 rounded-xl border border-slate-800 flex gap-2.5">
+                                <span class="font-mono text-indigo-500 font-bold">01.</span>
+                                <div><strong class="text-slate-200 block mb-0.5">Check Saved Searches</strong>Run parameters across engine engines & boards.</div>
+                            </div>
+                            <div class="bg-[#0b0f19] p-3 rounded-xl border border-slate-800 flex gap-2.5">
+                                <span class="font-mono text-indigo-500 font-bold">02.</span>
+                                <div><strong class="text-slate-200 block mb-0.5">Direct Page Review</strong>Check pipeline lists on priority companies.</div>
+                            </div>
+                            <div class="bg-[#0b0f19] p-3 rounded-xl border border-slate-800 flex gap-2.5">
+                                <span class="font-mono text-indigo-500 font-bold">03.</span>
+                                <div><strong class="text-slate-200 block mb-0.5">Submit & Log</strong>File applications and immediately register rows here.</div>
+                            </div>
+                            <div class="bg-[#0b0f19] p-3 rounded-xl border border-slate-800 flex gap-2.5">
+                                <span class="font-mono text-indigo-500 font-bold">04.</span>
+                                <div><strong class="text-slate-200 block mb-0.5">Engage Networks</strong>Draft content assets and run milestone touchpoints.</div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Target Tracking Summary Box -->
-                        <div class="bg-slate-950/30 border border-slate-800/80 p-6 rounded-2xl flex flex-col justify-between">
+                    <div class="flex-1 overflow-auto max-h-[600px] relative">
+                        <table class="w-full text-left text-xs border-collapse" id="mainDataTable">
+                            <thead class="sticky top-0 bg-[#1e293b] text-slate-300 uppercase tracking-wider font-semibold border-b border-slate-800 z-10" id="tableHeaderRow">
+                                </thead>
+                            <tbody class="divide-y divide-slate-800/60" id="tableBodyRows">
+                                </tbody>
+                        </table>
+                        
+                        <div id="blankSlateDisplay" class="hidden flex flex-col items-center justify-center p-12 text-center text-slate-500 space-y-3">
+                            <svg class="w-12 h-12 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m-9 1V4a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg>
                             <div>
-                                <h3 class="text-xs font-black tracking-widest text-slate-400 uppercase mb-4 flex items-center justify-between">
-                                    <span>Target Tracks Distribution</span>
-                                    <i class="fa-solid fa-chart-pie text-brand-500"></i>
-                                </h3>
-                                <ul class="space-y-3 text-xs">
-                                    <li class="flex justify-between items-center bg-slate-950/60 px-4 py-3 rounded-xl border border-slate-800/60">
-                                        <span class="font-semibold text-slate-300">Technical PM Roles</span>
-                                        <span class="bg-indigo-600/20 text-indigo-300 font-bold px-2 py-0.5 rounded border border-indigo-500/10" id="tag-count-tpm">0</span>
-                                    </li>
-                                    <li class="flex justify-between items-center bg-slate-950/60 px-4 py-3 rounded-xl border border-slate-800/60">
-                                        <span class="font-semibold text-slate-300">Software & DevOps Engineering</span>
-                                        <span class="bg-emerald-600/20 text-emerald-300 font-bold px-2 py-0.5 rounded border border-emerald-500/10" id="tag-count-dev">0</span>
-                                    </li>
-                                    <li class="flex justify-between items-center bg-slate-950/60 px-4 py-3 rounded-xl border border-slate-800/60">
-                                        <span class="font-semibold text-slate-300">AI Automation & Solutions Roles</span>
-                                        <span class="bg-amber-600/20 text-amber-300 font-bold px-2 py-0.5 rounded border border-amber-500/10" id="tag-count-ai">0</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                            <div class="mt-6 pt-5 border-t border-slate-800/80 text-[11px] text-slate-500 flex items-center gap-2">
-                                <i class="fa-solid fa-shield text-brand-500/50"></i>
-                                <span>Isolated Browser LocalStorage active. Export data blocks before browser clearing.</span>
+                                <p class="text-sm font-medium text-slate-400">Workspace sheet is completely clean.</p>
+                                <p class="text-xs text-slate-600 mt-0.5">No metrics recorded. Click "Add Record" to create your layout.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- SCREEN VIEW 1: Applications Sheet -->
-                <div id="view-applications" class="hidden flex-1 flex-col min-h-0">
-                    <div class="sheet-container flex-1">
-                        <table class="min-w-full divide-y divide-slate-800 text-xs text-left">
-                            <thead class="bg-slate-950 text-slate-400 sticky top-0 z-10 border-b border-slate-800">
-                                <tr>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[100px]">Date Found</th>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[100px]">Date Applied</th>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[130px]">Company</th>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[160px]">Role Title</th>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Location</th>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Remote Type</th>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[130px]">Role Type</th>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[100px]">Source</th>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[100px]">Job Link</th>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[100px]">CV Used</th>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[130px]">Cover Note</th>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Status</th>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Follow-up</th>
-                                    <th class="px-4 py-3.5 font-bold uppercase tracking-wider min-w-[180px]">Notes</th>
-                                    <th class="px-4 py-3.5 text-center min-w-[90px]">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-slate-900 divide-y divide-slate-800/50" id="table-body-applications">
-                                <!-- Managed dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- SCREEN VIEW 2: Targeted Companies -->
-                <div id="view-companies" class="hidden flex-1 flex-col min-h-0">
-                    <div class="sheet-container flex-1">
-                        <table class="min-w-full divide-y divide-slate-800 text-xs text-left">
-                            <thead class="bg-slate-950 text-slate-400 sticky top-0 z-10 border-b border-slate-800">
-                                <tr>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[150px]">Company Name</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Website</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[130px]">Career Page</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[120px]">Sector</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[150px]">Target Roles</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[150px]">Remote Policy</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[100px]">Priority</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Last Checked</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[200px]">Notes</th>
-                                    <th class="px-6 py-3.5 text-center min-w-[90px]">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-slate-900 divide-y divide-slate-800/50" id="table-body-companies">
-                                <!-- Managed dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- SCREEN VIEW 3: Keywords & Saved Searches -->
-                <div id="view-keywords" class="hidden flex-1 flex-col min-h-0">
-                    <div class="sheet-container flex-1">
-                        <table class="min-w-full divide-y divide-slate-800 text-xs text-left">
-                            <thead class="bg-slate-950 text-slate-400 sticky top-0 z-10 border-b border-slate-800">
-                                <tr>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[150px]">Search Name</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[120px]">Platform</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[220px]">Search Query</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Region</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[130px]">Role Focus</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Frequency</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[200px]">Notes</th>
-                                    <th class="px-6 py-3.5 text-center min-w-[90px]">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-slate-900 divide-y divide-slate-800/50" id="table-body-keywords">
-                                <!-- Managed dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- SCREEN VIEW 4: Weekly Performance Targets -->
-                <div id="view-weekly" class="hidden flex-1 flex-col min-h-0">
-                    <div class="sheet-container flex-1">
-                        <table class="min-w-full divide-y divide-slate-800 text-xs text-left">
-                            <thead class="bg-slate-950 text-slate-400 sticky top-0 z-10 border-b border-slate-800">
-                                <tr>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[130px]">Week Starting</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider text-center min-w-[100px]">Target Apps</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider text-center min-w-[110px]">Target Checks</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider text-center min-w-[110px]">Target Outbounds</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider text-center text-brand-400 min-w-[100px]">Actual Apps</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider text-center text-brand-400 min-w-[110px]">Actual Checks</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider text-center text-brand-400 min-w-[110px]">Actual Outbounds</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[130px]">Goal Progress</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[220px]">Notes</th>
-                                    <th class="px-6 py-3.5 text-center min-w-[90px]">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-slate-900 divide-y divide-slate-800/50" id="table-body-weekly">
-                                <!-- Managed dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- SCREEN VIEW 5: LinkedIn Personal Brand Content -->
-                <div id="view-linkedin" class="hidden flex-1 flex-col min-h-0">
-                    <div class="sheet-container flex-1">
-                        <table class="min-w-full divide-y divide-slate-800 text-xs text-left">
-                            <thead class="bg-slate-950 text-slate-400 sticky top-0 z-10 border-b border-slate-800">
-                                <tr>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Date To Post</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[120px]">Content Type</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[150px]">Topic</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[200px]">Hook Line</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[250px]">Draft Body</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[150px]">CTA Prompt</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Status</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Live URL</th>
-                                    <th class="px-6 py-3.5 text-center min-w-[90px]">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-slate-900 divide-y divide-slate-800/50" id="table-body-linkedin">
-                                <!-- Managed dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- SCREEN VIEW 6: Target CV Versions -->
-                <div id="view-resumes" class="hidden flex-1 flex-col min-h-0">
-                    <div class="sheet-container flex-1">
-                        <table class="min-w-full divide-y divide-slate-800 text-xs text-left">
-                            <thead class="bg-slate-950 text-slate-400 sticky top-0 z-10 border-b border-slate-800">
-                                <tr>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[150px]">Version Name</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[150px]">Target Role Focus</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[200px]">Primary Tailored Skillsets</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Last Updated</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Asset URL</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[220px]">Strategy Notes</th>
-                                    <th class="px-6 py-3.5 text-center min-w-[90px]">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-slate-900 divide-y divide-slate-800/50" id="table-body-resumes">
-                                <!-- Managed dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- SCREEN VIEW 7: Interview Prep Master Board -->
-                <div id="view-interviews" class="hidden flex-1 flex-col min-h-0">
-                    <div class="sheet-container flex-1">
-                        <table class="min-w-full divide-y divide-slate-800 text-xs text-left">
-                            <thead class="bg-slate-950 text-slate-400 sticky top-0 z-10 border-b border-slate-800">
-                                <tr>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[130px]">Company</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[140px]">Role Name</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[120px]">Interview Stage</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[150px]">Topic/Focus</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[200px]">Expected Questions</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[250px]">My Strategic Answers</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[150px]">Follow-up Priority</th>
-                                    <th class="px-6 py-3.5 font-bold uppercase tracking-wider min-w-[110px]">Status</th>
-                                    <th class="px-6 py-3.5 text-center min-w-[90px]">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-slate-900 divide-y divide-slate-800/50" id="table-body-interviews">
-                                <!-- Managed dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-        </main>
+            </main>
+        </div>
     </div>
 
-    <!-- CUSTOM DIALOG MODAL: ADD / EDIT PORTAL WINDOW -->
-    <div id="add-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-        <div class="bg-slate-900 rounded-2xl shadow-2xl border border-slate-800 w-full max-w-xl flex flex-col max-h-[85vh] overflow-hidden">
-            <!-- Modal Banner -->
-            <div class="px-6 py-4.5 border-b border-slate-800/80 bg-slate-900/50 flex items-center justify-between shrink-0">
-                <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-pen-fancy text-brand-500"></i>
-                    <span id="modal-title">Edit Entry</span>
-                </h3>
-                <button onclick="closeAddRowModal()" class="text-slate-400 hover:text-white transition">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
+    <div id="dataModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden items-center justify-center px-4 py-6">
+        <div class="bg-[#131c2e] border border-slate-800 w-full max-w-2xl rounded-2xl max-h-[90vh] flex flex-col shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+            <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-[#162035] rounded-t-2xl">
+                <h3 id="modalTitle" class="text-sm font-bold uppercase tracking-wider text-white">Record System Insertion</h3>
+                <button onclick="closeDataModal()" class="text-slate-400 hover:text-white cursor-pointer text-lg">&times;</button>
             </div>
             
-            <!-- Injected Input Form Grid -->
-            <div class="px-6 py-6 overflow-y-auto space-y-5 text-xs text-left" id="modal-form-fields">
-                <!-- Managed in javascript -->
-            </div>
+            <form id="modalForm" onsubmit="saveModalData(event)" class="flex flex-col flex-1 overflow-hidden">
+                <input type="hidden" id="editRowIndex">
+                
+                <div class="p-6 overflow-y-auto space-y-4 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 items-start" id="modalFormFields">
+                    </div>
 
-            <!-- Modal Footer Controls -->
-            <div class="px-6 py-4 bg-slate-950/60 border-t border-slate-800/80 flex items-center justify-end space-x-3 shrink-0">
-                <button onclick="closeAddRowModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition">Cancel</button>
-                <button onclick="saveModalRow()" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 active:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-lg transition duration-150">Save Record</button>
-            </div>
+                <div class="p-4 border-t border-slate-800 bg-[#111827] flex justify-end gap-2 rounded-b-2xl">
+                    <button type="button" onclick="closeDataModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-lg transition-all cursor-pointer">Cancel</button>
+                    <button type="submit" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg shadow-lg shadow-indigo-600/10 transition-all cursor-pointer">Commit Line</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- CUSTOM NOTIFICATION POPUPS (No native alert components allowed) -->
-    <div id="custom-toast" class="fixed bottom-6 right-6 z-50 hidden max-w-sm w-full bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-4 transform translate-y-2 transition-all duration-300 flex items-start gap-3">
-        <div class="shrink-0 p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400" id="toast-icon-box">
-            <i class="fa-solid fa-circle-check text-base"></i>
-        </div>
-        <div class="flex-1">
-            <h4 class="text-xs font-bold text-white uppercase tracking-wider" id="toast-title">Success</h4>
-            <p class="text-[11px] text-slate-400 mt-1" id="toast-message">Database changes verified successfully.</p>
-        </div>
-        <button onclick="hideToast()" class="text-slate-500 hover:text-slate-300 transition">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-    </div>
-
-    <!-- CUSTOM CONFIRM DIALOG MODAL (No native confirm() prompts allowed) -->
-    <div id="confirm-modal" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-        <div class="bg-slate-900 rounded-2xl shadow-2xl border border-slate-800 max-w-sm w-full p-6 text-center animate-zoom-in">
-            <div class="inline-flex p-3.5 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-2xl mb-4">
-                <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+    <div id="confirmModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden items-center justify-center px-4">
+        <div class="bg-[#131c2e] border border-slate-800 max-w-sm w-full rounded-2xl p-6 shadow-2xl text-center space-y-4">
+            <div class="mx-auto w-12 h-12 bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center border border-rose-500/20">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
             </div>
-            <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">Are you sure?</h3>
-            <p class="text-xs text-slate-400 leading-relaxed mb-6" id="confirm-modal-text">This action is irreversible and will erase specified data blocks from current profile storage.</p>
-            
-            <div class="flex items-center justify-center gap-3">
-                <button id="confirm-btn-cancel" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 hover:text-white rounded-xl transition">No, Cancel</button>
-                <button id="confirm-btn-proceed" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-xs font-bold text-white rounded-xl shadow transition">Yes, Proceed</button>
+            <div>
+                <h3 class="text-sm font-bold uppercase tracking-wider text-white">Purge Entry Item?</h3>
+                <p class="text-xs text-slate-400 mt-1">This operation deletes the data permanently from this local workstation.</p>
+            </div>
+            <div class="flex justify-center gap-2 pt-2">
+                <button onclick="closeConfirmModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-lg transition-all cursor-pointer">Abort</button>
+                <button id="confirmDeleteBtn" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-lg transition-all cursor-pointer">Purge Row</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Custom deterministic client-side hashing algorithm (djb2) to safely store credentials
-        function djb2Hash(str) {
-            let hash = 5381;
-            for (let i = 0; i < str.length; i++) {
-                hash = ((hash << 5) + hash) + str.charCodeAt(i);
+        // Plaintext credentials for robust deployment
+        const DUAL_USERS = {
+            "roan": "roan2026",
+            "wife": "wife2026"
+        };
+
+        // Application architecture specifications
+        const SYSTEM_TABS = {
+            applications: {
+                title: "Applications Control",
+                desc: "Primary tracking system for direct remote positions across the UK, India, and Global spaces.",
+                columns: ["Date Found", "Date Applied", "Company", "Role Title", "Location", "Remote Type", "Role Type", "Source", "Job Link", "CV Version Used", "Cover Note Used", "Status", "Follow-up Date", "Notes"],
+                dropdowns: {
+                    "Remote Type": ["India", "UK", "Global", "US", "Hybrid", "On-site"],
+                    "Role Type": ["Technical PM", "Full Stack", "Backend", "AI Automation", "Solutions Engineer", "DevOps", "Other"],
+                    "Status": ["New", "Saved", "Applied", "Screening", "Interview", "Offer", "Rejected", "On Hold"]
+                }
+            },
+            companies: {
+                title: "Target Enterprise Page",
+                desc: "Repository monitoring specific continuous outposts & internal operations tracking profiles.",
+                columns: ["Company Name", "Website", "Career Page URL", "Sector", "Target Roles", "Remote Policy", "Priority", "Last Checked", "Notes"]
+            },
+            keywords: {
+                title: "Keywords & Boolean Logic Searches",
+                desc: "Active indices mapping automation triggers, search scripts, and routine criteria checks.",
+                columns: ["Search Name", "Platform", "Search Query", "Region", "Role Focus", "Frequency", "Notes"]
+            },
+            weekly_plan: {
+                title: "Operational Targets & Goals",
+                desc: "Weekly metrics tracking output benchmarks vs actual outbound activity counts.",
+                columns: ["Week Starting", "Target Applications", "Target Company Checks", "Target Recruiter Messages", "Actual Applications", "Actual Checks", "Actual Messages", "Notes"]
+            },
+            linkedin_content: {
+                title: "Personal Brand & LinkedIn Outreach Assets",
+                desc: "Content deployment tracker mapping outbound marketing visibility workflows.",
+                columns: ["Date", "Content Type", "Topic", "Hook", "Draft", "CTA", "Status", "Posted Link"]
+            },
+            resumes: {
+                title: "Specialized CV & Resume Matrix",
+                desc: "Cataloging localized documentation links optimized by role-focus verticals.",
+                columns: ["Version Name", "Target Role", "Focus", "Last Updated", "File Link", "Notes"]
+            },
+            interview_prep: {
+                title: "Interview Intelligence Laboratory",
+                desc: "Active round insights logging system architecture topics and tactical questions.",
+                columns: ["Company", "Role", "Interview Stage", "Topic", "Questions Asked", "My Answer Notes", "Follow-up Action", "Status"]
             }
-            return (hash >>> 0).toString(16);
-        }
-
-        // Hashed Usernames mapped to Hashed Passwords to ensure public safety on GitHub Pages
-        const CREDENTIALS_HASH = {
-            "7c9df7d5": "fbaf6327", // "roan" : "roan2026"
-            "7ca09cd0": "d61e6c9a"  // "wife" : "wife2026"
         };
 
-        // Tab Data Structures Map
-        const structures = {
-            applications: [
-                { id: 'dateFound', label: 'Date Found', type: 'date', required: true },
-                { id: 'dateApplied', label: 'Date Applied', type: 'date' },
-                { id: 'company', label: 'Company', type: 'text', required: true },
-                { id: 'roleTitle', label: 'Role Title', type: 'text', required: true },
-                { id: 'location', label: 'Location', type: 'text' },
-                { id: 'remoteType', label: 'Remote Type', type: 'select', choices: ['India', 'UK', 'Global', 'US', 'Hybrid', 'On-site'] },
-                { id: 'roleType', label: 'Role Type', type: 'select', choices: ['Technical PM', 'Full Stack', 'Backend', 'AI Automation', 'Solutions Engineer', 'DevOps', 'Other'] },
-                { id: 'source', label: 'Source', type: 'text' },
-                { id: 'jobLink', label: 'Job Link', type: 'url' },
-                { id: 'cvVersion', label: 'CV Version Used', type: 'text' },
-                { id: 'coverNote', label: 'Cover Note Used', type: 'text' },
-                { id: 'status', label: 'Status', type: 'select', choices: ['New', 'Saved', 'Applied', 'Screening', 'Interview', 'Offer', 'Rejected', 'On Hold'] },
-                { id: 'followUpDate', label: 'Follow-up Date', type: 'date' },
-                { id: 'notes', label: 'Notes', type: 'textarea' }
-            ],
-            companies: [
-                { id: 'name', label: 'Company Name', type: 'text', required: true },
-                { id: 'website', label: 'Website', type: 'url' },
-                { id: 'careerPage', label: 'Career Page URL', type: 'url' },
-                { id: 'sector', label: 'Sector', type: 'text' },
-                { id: 'targetRoles', label: 'Target Roles', type: 'text' },
-                { id: 'remotePolicy', label: 'Remote Policy', type: 'text' },
-                { id: 'priority', label: 'Priority', type: 'select', choices: ['High', 'Medium', 'Low'] },
-                { id: 'lastChecked', label: 'Last Checked', type: 'date' },
-                { id: 'notes', label: 'Notes', type: 'textarea' }
-            ],
-            keywords: [
-                { id: 'name', label: 'Search Name', type: 'text', required: true },
-                { id: 'platform', label: 'Platform', type: 'text' },
-                { id: 'query', label: 'Search Query', type: 'text' },
-                { id: 'region', label: 'Region', type: 'text' },
-                { id: 'roleFocus', label: 'Role Focus', type: 'text' },
-                { id: 'frequency', label: 'Frequency', type: 'select', choices: ['Daily', 'Bi-weekly', 'Weekly', 'Monthly'] },
-                { id: 'notes', label: 'Notes', type: 'textarea' }
-            ],
-            weekly: [
-                { id: 'weekStarting', label: 'Week Starting Date', type: 'date', required: true },
-                { id: 'targetApps', label: 'Target Applications', type: 'number' },
-                { id: 'targetCompanyChecks', label: 'Target Company Checks', type: 'number' },
-                { id: 'targetRecruiterMsgs', label: 'Target Recruiter Outbounds', type: 'number' },
-                { id: 'actualApps', label: 'Actual Applications', type: 'number' },
-                { id: 'actualChecks', label: 'Actual Checks', type: 'number' },
-                { id: 'actualMsgs', label: 'Actual Outbounds', type: 'number' },
-                { id: 'notes', label: 'Weekly Performance Notes', type: 'textarea' }
-            ],
-            linkedin: [
-                { id: 'date', label: 'Date to Publish', type: 'date' },
-                { id: 'contentType', label: 'Content Type', type: 'text' },
-                { id: 'topic', label: 'Topic / Objective', type: 'text' },
-                { id: 'hook', label: 'First Line Hook', type: 'text' },
-                { id: 'draft', label: 'Draft Content Body', type: 'textarea' },
-                { id: 'cta', label: 'CTA Call-to-action', type: 'text' },
-                { id: 'status', label: 'Status', type: 'select', choices: ['Drafting', 'Approved', 'Scheduled', 'Published'] },
-                { id: 'postedLink', label: 'Posted Link', type: 'url' }
-            ],
-            resumes: [
-                { id: 'name', label: 'Version Name', type: 'text', required: true },
-                { id: 'targetRole', label: 'Target Role Focus', type: 'text' },
-                { id: 'focus', label: 'Primary Tailored Skillsets', type: 'text' },
-                { id: 'lastUpdated', label: 'Last Updated', type: 'date' },
-                { id: 'fileLink', label: 'File Link', type: 'url' },
-                { id: 'notes', label: 'Tailoring Strategy Notes', type: 'textarea' }
-            ],
-            interviews: [
-                { id: 'company', label: 'Company Name', type: 'text', required: true },
-                { id: 'role', label: 'Role', type: 'text', required: true },
-                { id: 'stage', label: 'Interview Stage', type: 'text' },
-                { id: 'topic', label: 'Topic Focus', type: 'text' },
-                { id: 'questionsAsked', label: 'Expected Questions', type: 'textarea' },
-                { id: 'answerNotes', label: 'My Strategic Answers', type: 'textarea' },
-                { id: 'followUpAction', label: 'Follow-up Priority Action', type: 'text' },
-                { id: 'status', label: 'Interview Status', type: 'select', choices: ['Scheduled', 'Completed', 'Cancelled'] }
-            ]
-        };
+        let currentUser = "";
+        let currentTab = "applications";
+        let localOSStore = {};
+        let deleteTargetIndex = null;
 
-        // Fully emptied structural templates for self-input data logging
-        const cleanStateBlueprint = {
-            applications: [],
-            companies: [],
-            keywords: [],
-            weekly: [],
-            linkedin: [],
-            resumes: [],
-            interviews: []
-        };
+        // AUTHENTICATION INTERACTIVE LOGIC
+        function handleLogin(e) {
+            // Support both standard form event submission and customized form executions
+            if(e && e.preventDefault) e.preventDefault();
+            else if(window.event) window.event.returnValue = false;
 
-        const workflowChecklist = [
-            { id: 'check-searches', label: 'Check saved searches (LinkedIn/Google Jobs/Remote Boards)' },
-            { id: 'review-target', label: 'Review target company career pages directly' },
-            { id: 'apply-new', label: 'Apply to newly discovered open roles' },
-            { id: 'log-app', label: 'Log application actions immediately in the Operating System' },
-            { id: 'schedule-follow', label: 'Schedule & run follow-up communications' },
-            { id: 'prep-interviews', label: 'Track interview prep objectives for upcoming rounds' },
-            { id: 'draft-brand', label: 'Draft LinkedIn thought-leadership content updates' }
-        ];
+            const userIn = document.getElementById('username').value.trim().toLowerCase();
+            const passIn = document.getElementById('password').value.trim();
+            const errBox = document.getElementById('loginError');
 
-        // Master UI session variables
-        let activeTab = 'dashboard';
-        let currentUser = null;
-        let state = {};
-        let checklistState = {};
-
-        // Retrieve key partitioned dataset mapped to logged-in profile namespace
-        function getPartitionKey(username, type = 'data') {
-            return `roan_job_search_os_${type}_${username.toLowerCase()}`;
-        }
-
-        // Authentication management functions
-        function checkSessionAuth() {
-            const loggedInUser = sessionStorage.getItem('roan_authenticated_user');
-            const loginGate = document.getElementById('login-gate');
-            const mainApp = document.getElementById('main-application');
-
-            if (loggedInUser && (djb2Hash(loggedInUser.toLowerCase()) === '7c9df7d5' || djb2Hash(loggedInUser.toLowerCase()) === '7ca09cd0')) {
-                currentUser = loggedInUser.toLowerCase();
-                loginGate.classList.add('hidden');
-                mainApp.classList.remove('hidden');
-                
-                // Display current operator dynamically in top header banner
-                document.getElementById('operator-badge').innerText = currentUser === 'roan' ? "Roan" : "Wife/Partner";
+            if (DUAL_USERS[userIn] && DUAL_USERS[userIn] === passIn) {
+                currentUser = userIn;
+                errBox.classList.add('hidden');
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('appScreen').classList.remove('hidden');
+                document.getElementById('userDisplayTag').textContent = `OPERATOR: ${currentUser.toUpperCase()}`;
                 
                 initWorkspace();
             } else {
-                loginGate.classList.remove('hidden');
-                mainApp.classList.add('hidden');
+                errBox.classList.remove('hidden');
             }
-        }
-
-        function handleAuthLogin(event) {
-            event.preventDefault();
-            const userInput = document.getElementById('login-username').value.trim().toLowerCase();
-            const passInput = document.getElementById('login-password').value.trim();
-            const errorCard = document.getElementById('login-error-card');
-
-            const userHash = djb2Hash(userInput);
-            const passHash = djb2Hash(passInput);
-
-            if (CREDENTIALS_HASH[userHash] && CREDENTIALS_HASH[userHash] === passHash) {
-                sessionStorage.setItem('roan_authenticated_user', userInput);
-                errorCard.classList.add('hidden');
-                checkSessionAuth();
-                triggerToast('Authentication Success', `Welcome to your customized Terminal, ${userInput === 'roan' ? 'Roan' : 'Partner'}.`, 'success');
-            } else {
-                errorCard.classList.remove('hidden');
-                // Shake effect on form to visually alert incorrect login
-                const form = document.getElementById('login-form');
-                form.classList.add('translate-x-1');
-                setTimeout(() => form.classList.remove('translate-x-1'), 150);
-            }
+            return false;
         }
 
         function handleLogout() {
-            showConfirmModal("Lock Session Console?", "Are you sure you want to end your secure console session?", () => {
-                sessionStorage.removeItem('roan_authenticated_user');
-                currentUser = null;
-                checkSessionAuth();
-                triggerToast('Session Locked', 'Identity state successfully cleared.', 'info');
-            });
+            currentUser = "";
+            document.getElementById('username').value = "";
+            document.getElementById('password').value = "";
+            document.getElementById('appScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
         }
 
-        // Initialize Workspace state mapping data structures
+        // WORKSPACE STACK HOOKS & PARSERS
         function initWorkspace() {
-            if (!currentUser) return;
+            const storageKey = `roan_os_data_${currentUser}`;
+            const archivedData = localStorage.getItem(storageKey);
             
-            // Load user-isolated data lists
-            const storedData = localStorage.getItem(getPartitionKey(currentUser, 'data'));
-            state = storedData ? JSON.parse(storedData) : JSON.parse(JSON.stringify(cleanStateBlueprint));
+            localOSStore = archivedData ? JSON.parse(archivedData) : {};
             
-            // Load user-isolated workflow task completion flags
-            const storedChecklist = localStorage.getItem(getPartitionKey(currentUser, 'checklist'));
-            checklistState = storedChecklist ? JSON.parse(storedChecklist) : {};
-
-            switchTab(activeTab);
-            updateGlobalKPIs();
-        }
-
-        function saveState() {
-            if (!currentUser) return;
-            localStorage.setItem(getPartitionKey(currentUser, 'data'), JSON.stringify(state));
-            updateGlobalKPIs();
-        }
-
-        // Checklist Operations
-        function toggleChecklist(id) {
-            if (!currentUser) return;
-            checklistState[id] = !checklistState[id];
-            localStorage.setItem(getPartitionKey(currentUser, 'checklist'), JSON.stringify(checklistState));
-            renderDashboard();
-        }
-
-        // Dynamic Sourcing KPIs Calculation
-        function updateGlobalKPIs() {
-            const totalApps = state.applications ? state.applications.length : 0;
-            document.getElementById('stat-total-apps').innerText = totalApps;
-
-            const activeInterviews = state.applications ? state.applications.filter(app => ['Screening', 'Interview'].includes(app.status)).length : 0;
-            document.getElementById('stat-active-interviews').innerText = activeInterviews;
-
-            let pendingCount = 0;
-            const todayStr = new Date().toISOString().split('T')[0];
-            if (state.applications) {
-                state.applications.forEach(app => {
-                    if (app.followUpDate && app.followUpDate < todayStr && !['Rejected', 'Offer', 'On Hold'].includes(app.status)) {
-                        pendingCount++;
-                    }
-                });
-            }
-            document.getElementById('stat-pending-actions').innerText = pendingCount;
-        }
-
-        // Tab switcher logic
-        function switchTab(tabId) {
-            activeTab = tabId;
-            
-            // Toggle highlight colors on active pill
-            const buttons = document.querySelectorAll('[id^="tab-btn-"]');
-            buttons.forEach(btn => {
-                btn.className = "flex-1 min-w-[130px] inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-150 text-slate-400 hover:bg-slate-800 hover:text-white";
+            // Generate basic empty structure if it doesn't exist
+            Object.keys(SYSTEM_TABS).forEach(tab => {
+                if (!localOSStore[tab]) localOSStore[tab] = [];
             });
-            
-            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
-            if (activeBtn) {
-                activeBtn.className = "flex-1 min-w-[130px] inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-150 bg-brand-600 text-white shadow-md border border-brand-500/20";
-            }
 
-            // Hide/Show correct screen view panels
-            const views = document.querySelectorAll('[id^="view-"]');
-            views.forEach(v => v.classList.add('hidden'));
-
-            const activeView = document.getElementById(`view-${tabId}`);
-            if (activeView) {
-                activeView.classList.remove('hidden');
-                if (tabId !== 'dashboard') {
-                    document.getElementById('table-toolbar').classList.remove('hidden');
-                } else {
-                    document.getElementById('table-toolbar').classList.add('hidden');
-                }
-            }
-
-            if (tabId !== 'dashboard') {
-                renderTableData(tabId);
-            } else {
-                renderDashboard();
-            }
-
-            document.getElementById('sheet-global-search').value = '';
-            updateGlobalKPIs();
+            generateTabSelectors();
+            switchTab(currentTab);
         }
 
-        // Custom Visual Badges Generation
-        function getBadgeMarkup(status) {
-            if (!status) return '';
-            let bg = 'bg-slate-800 text-slate-400 border border-slate-700/50';
-            switch (status) {
-                case 'Interview':
-                case 'Scheduled':
-                    bg = 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold';
-                    break;
-                case 'New':
-                    bg = 'bg-blue-500/10 text-blue-400 border border-blue-500/20';
-                    break;
-                case 'Applied':
-                case 'Approved':
-                    bg = 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-semibold';
-                    break;
-                case 'Screening':
-                    bg = 'bg-amber-500/10 text-amber-400 border border-amber-500/20';
-                    break;
-                case 'Offer':
-                    bg = 'bg-fuchsia-500/15 text-fuchsia-300 border border-fuchsia-500/30 font-black animate-pulse';
-                    break;
-                case 'Rejected':
-                case 'Cancelled':
-                    bg = 'bg-rose-500/10 text-rose-400 border border-rose-500/20';
-                    break;
-                case 'On Hold':
-                case 'Drafting':
-                    bg = 'bg-slate-800 text-slate-400 border border-slate-700';
-                    break;
-                case 'High':
-                    bg = 'bg-rose-500/15 text-rose-300 font-extrabold border border-rose-500/20';
-                    break;
-                case 'Medium':
-                    bg = 'bg-amber-500/10 text-amber-300 border border-amber-500/20';
-                    break;
-                case 'Low':
-                    bg = 'bg-slate-800 text-slate-400 border border-slate-750';
-                    break;
-            }
-            return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${bg}">${status}</span>`;
+        function commitToDisk() {
+            const storageKey = `roan_os_data_${currentUser}`;
+            localStorage.setItem(storageKey, JSON.stringify(localOSStore));
         }
 
-        // Render Dashboard Metrics Card Data
-        function renderDashboard() {
-            const container = document.getElementById('checklist-container');
-            container.innerHTML = '';
+        // INTERFACE GENERATORS
+        function generateTabSelectors() {
+            const nav = document.getElementById('tabsNav');
+            nav.innerHTML = "";
             
-            let tpmCount = 0;
-            let devCount = 0;
-            let aiCount = 0;
-
-            if (state.applications) {
-                state.applications.forEach(app => {
-                    if (app.roleType === 'Technical PM') tpmCount++;
-                    else if (['Full Stack', 'Backend', 'DevOps'].includes(app.roleType)) devCount++;
-                    else if (['AI Automation', 'Solutions Engineer'].includes(app.roleType)) aiCount++;
-                });
-            }
-
-            document.getElementById('tag-count-tpm').innerText = tpmCount;
-            document.getElementById('tag-count-dev').innerText = devCount;
-            document.getElementById('tag-count-ai').innerText = aiCount;
-
-            workflowChecklist.forEach((item, index) => {
-                const isChecked = checklistState[item.id] ? 'checked' : '';
-                const lineThrough = checklistState[item.id] ? 'line-through text-slate-500' : 'text-slate-200';
+            Object.keys(SYSTEM_TABS).forEach(tabKey => {
+                const btn = document.createElement('button');
+                btn.className = `tab-btn text-left px-4 py-2.5 rounded-xl text-xs font-medium transition-all flex items-center justify-between cursor-pointer whitespace-nowrap lg:whitespace-normal shrink-0 ${tabKey === currentTab ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/10' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'}`;
                 
-                const itemDiv = document.createElement('div');
-                itemDiv.className = "flex items-center space-x-3.5 bg-slate-900/60 p-4 rounded-xl border border-slate-800 hover:border-brand-500/30 transition duration-150";
-                itemDiv.innerHTML = `
-                    <input type="checkbox" id="check-${item.id}" onchange="toggleChecklist('${item.id}')" ${isChecked} class="h-4.5 w-4.5 rounded border-slate-700 text-brand-600 focus:ring-brand-500 focus:ring-offset-slate-900 bg-slate-950 cursor-pointer">
-                    <label for="check-${item.id}" class="text-xs font-semibold cursor-pointer ${lineThrough} select-none transition-all duration-150 flex-1">
-                        ${index + 1}. ${item.label}
-                    </label>
-                `;
-                container.appendChild(itemDiv);
+                // Capitalize string label cleanly
+                const label = tabKey.replace('_', ' ').toUpperCase();
+                btn.innerHTML = `<span>${label}</span>`;
+                btn.onclick = () => switchTab(tabKey);
+                nav.appendChild(btn);
             });
         }
 
-        // Render Sheet Tables Data
-        function renderTableData(tabId) {
-            const tableBody = document.getElementById(`table-body-${tabId}`);
-            if (!tableBody) return;
+        function switchTab(tabKey) {
+            currentTab = tabKey;
+            
+            // Handle visual button swapping state
+            document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+                const key = Object.keys(SYSTEM_TABS)[idx];
+                if(key === currentTab) {
+                    btn.className = "tab-btn text-left px-4 py-2.5 rounded-xl text-xs font-medium transition-all flex items-center justify-between cursor-pointer bg-indigo-600 text-white shadow-md shadow-indigo-600/10";
+                } else {
+                    btn.className = "tab-btn text-left px-4 py-2.5 rounded-xl text-xs font-medium transition-all flex items-center justify-between cursor-pointer text-slate-400 hover:bg-slate-800/50 hover:text-slate-200";
+                }
+            });
 
-            tableBody.innerHTML = '';
-            const list = state[tabId] || [];
+            // Update panel text descriptions
+            document.getElementById('activeTabTitle').textContent = SYSTEM_TABS[tabKey].title;
+            document.getElementById('activeTabDesc').textContent = SYSTEM_TABS[tabKey].desc;
 
-            if (list.length === 0) {
-                const colsLength = structures[tabId].length + 1;
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="${colsLength}" class="px-6 py-20 text-center text-slate-500">
-                            <div class="max-w-md mx-auto flex flex-col items-center">
-                                <div class="bg-slate-950/60 p-5 rounded-2xl border border-slate-800/80 mb-4 text-brand-500">
-                                    <i class="fa-solid fa-folder-open text-4xl"></i>
-                                </div>
-                                <h3 class="text-slate-200 font-bold tracking-wider text-sm">Clean Tracking Sheet Ready</h3>
-                                <p class="text-[11px] text-slate-400 mt-1 mb-6 leading-relaxed">No data entered in this sheet section yet. Click "Add Record Row" on the toolbar above to log your first target entry!</p>
-                                <button onclick="triggerAddRowModal()" class="inline-flex items-center justify-center px-4 py-2 bg-brand-600/20 hover:bg-brand-600 border border-brand-500/30 text-brand-300 hover:text-white text-xs font-bold rounded-xl shadow transition duration-150">
-                                    <i class="fa-solid fa-plus mr-2"></i> Log First Entry Row
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+            // Toggle daily instruction guide header on dashboard view
+            const workflowGrid = document.getElementById('workflowSection');
+            if(tabKey === 'applications') workflowGrid.classList.remove('hidden');
+            else workflowGrid.classList.add('hidden');
+
+            document.getElementById('globalSearch').value = "";
+            renderTableGrid();
+        }
+
+        function renderTableGrid(filteredRows = null) {
+            const currentTabConfig = SYSTEM_TABS[currentTab];
+            const dataset = filteredRows || localOSStore[currentTab] || [];
+
+            // 1. Build Header Elements
+            const headerRow = document.getElementById('tableHeaderRow');
+            headerRow.innerHTML = "";
+            
+            const trHead = document.createElement('tr');
+            // Data dimension columns mapping
+            currentTabConfig.columns.forEach(col => {
+                const th = document.createElement('th');
+                th.className = "px-4 py-3 text-left font-semibold border-b border-slate-800 tracking-wider whitespace-nowrap text-[11px]";
+                th.textContent = col;
+                trHead.appendChild(th);
+            });
+            // Admin action controls dimension column
+            const thAction = document.createElement('th');
+            thAction.className = "px-4 py-3 text-right font-semibold border-b border-slate-800 tracking-wider text-[11px] w-24";
+            thAction.textContent = "Actions";
+            trHead.appendChild(thAction);
+            headerRow.appendChild(trHead);
+
+            // 2. Build Rows Elements
+            const bodyRows = document.getElementById('tableBodyRows');
+            bodyRows.innerHTML = "";
+
+            const blankSlate = document.getElementById('blankSlateDisplay');
+            if (dataset.length === 0) {
+                blankSlate.classList.remove('hidden');
+                return;
+            } else {
+                blankSlate.classList.add('hidden');
+            }
+
+            // Detect current calendar metrics to trace immediate overdue flags
+            const currentDateTimestamp = new Date().setHours(0,0,0,0);
+
+            dataset.forEach((record, idx) => {
+                const actualIndex = filteredRows ? record._originalIndex : idx;
+                const tr = document.createElement('tr');
+                
+                // Base minimal stripe class grouping
+                let rowBgClass = idx % 2 === 0 ? 'bg-[#131c2e] hover:bg-[#18233c]' : 'bg-[#162137] hover:bg-[#1b2944]';
+                
+                // CONDITIONAL HIGHLIGHT COUPLING ARCHITECTURE
+                if (record["Status"] === "Interview") {
+                    rowBgClass = "bg-emerald-950/40 hover:bg-emerald-900/40 text-emerald-200 border-l-2 border-emerald-500";
+                } else if (record["Follow-up Date"]) {
+                    const followUpDate = new Date(record["Follow-up Date"]).setHours(0,0,0,0);
+                    if (followUpDate < currentDateTimestamp && record["Status"] !== "Rejected" && record["Status"] !== "Offer" && record["Status"] !== "On Hold") {
+                        rowBgClass = "bg-rose-950/40 hover:bg-rose-900/40 text-rose-200 border-l-2 border-rose-500";
+                    }
+                }
+
+                tr.className = `${rowBgClass} transition-colors border-b border-slate-800/40`;
+
+                // Render matching entry columns
+                currentTabConfig.columns.forEach(col => {
+                    const td = document.createElement('td');
+                    td.className = "px-4 py-3 max-w-xs truncate text-xs font-medium";
+                    
+                    const cellVal = record[col] || "";
+                    // Auto wrap formatting for link metrics strings
+                    if (typeof cellVal === 'string' && (cellVal.startsWith('http://') || cellVal.startsWith('https://'))) {
+                        td.innerHTML = `<a href="${cellVal}" target="_blank" class="text-indigo-400 hover:underline flex items-center gap-0.5 truncate">Link ↗</a>`;
+                    } else {
+                        td.textContent = cellVal;
+                    }
+                    tr.appendChild(td);
+                });
+
+                // Generate administrative actions configuration cells
+                const tdAction = document.createElement('td');
+                tdAction.className = "px-4 py-3 text-right space-x-1.5 whitespace-nowrap";
+                tdAction.innerHTML = `
+                    <button onclick="openEditModal(${actualIndex})" class="text-indigo-400 hover:text-indigo-300 font-medium cursor-pointer transition-colors">Edit</button>
+                    <button onclick="triggerDeleteRecord(${actualIndex})" class="text-rose-500 hover:text-rose-400 font-medium cursor-pointer transition-colors">Delete</button>
                 `;
+                tr.appendChild(tdAction);
+                bodyRows.appendChild(tr);
+            });
+        }
+
+        // GLOBAL FAST-FILTER INPUT SEARCH LOGIC
+        function filterActiveTable() {
+            const query = document.getElementById('globalSearch').value.toLowerCase().trim();
+            const fullDataset = localOSStore[currentTab] || [];
+            
+            if (!query) {
+                renderTableGrid();
                 return;
             }
 
-            list.forEach(item => {
-                const row = document.createElement('tr');
-                row.id = `row-${tabId}-${item.id}`;
-                row.className = "hover:bg-slate-850/40 transition border-b border-slate-800/40";
-                
-                // CONDITIONAL FORMATTING HIGHLIGHTS (Applied directly inline safely)
-                if (tabId === 'applications') {
-                    // Soft green visual row highlight for active interview
-                    if (item.status === 'Interview') {
-                        row.classList.add('bg-emerald-950/20', 'border-l-2', 'border-l-emerald-500');
-                    }
-                    
-                    // Soft red visual highlight for past follow-ups overdue
-                    const todayStr = new Date().toISOString().split('T')[0];
-                    if (item.followUpDate && item.followUpDate < todayStr && !['Rejected', 'Offer', 'On Hold'].includes(item.status)) {
-                        row.classList.add('bg-rose-950/20', 'border-l-2', 'border-l-rose-500');
-                    }
-                } else if (tabId === 'interviews') {
-                    if (item.status === 'Scheduled') {
-                        row.classList.add('bg-emerald-950/20', 'border-l-2', 'border-l-emerald-500');
-                    }
-                }
-
-                let innerHtml = '';
-                
-                // Build visual structures for custom column headers
-                structures[tabId].forEach(col => {
-                    let val = item[col.id] || '';
-                    let displayVal = val;
-                    
-                    // URL Formatter
-                    if (col.type === 'url' && val) {
-                        displayVal = `<a href="${val}" target="_blank" class="inline-flex items-center gap-1 text-brand-400 hover:text-brand-300 hover:underline font-bold"><i class="fa-solid fa-up-right-from-square text-[10px]"></i> Open Link</a>`;
-                    }
-                    
-                    // Status & Priority formatting with custom badges
-                    if (col.id === 'status' || col.id === 'priority') {
-                        displayVal = getBadgeMarkup(val);
-                    }
-
-                    // Centering Number metrics
-                    if (col.type === 'number') {
-                        displayVal = `<div class="text-center font-extrabold text-slate-300">${val || 0}</div>`;
-                    }
-
-                    innerHtml += `
-                        <td class="px-4 py-3.5 border-r border-slate-800/40 last:border-r-0 max-w-[280px] truncate" title="${val}">
-                            ${displayVal}
-                        </td>
-                    `;
+            const columns = SYSTEM_TABS[currentTab].columns;
+            const filtered = fullDataset.map((row, index) => ({ ...row, _originalIndex: index }))
+                .filter(row => {
+                    return columns.some(col => {
+                        const cellString = String(row[col] || "").toLowerCase();
+                        return cellString.includes(query);
+                    });
                 });
 
-                // Inject targeted metrics progress bar specifically for Weekly Plans screen
-                if (tabId === 'weekly') {
-                    const targetApps = parseInt(item.targetApps) || 0;
-                    const actualApps = parseInt(item.actualApps) || 0;
-                    const progressPct = targetApps > 0 ? Math.min(Math.round((actualApps / targetApps) * 100), 100) : 0;
-                    
-                    innerHtml = innerHtml.replace('</td>\n                        <td class="px-4 py-3.5 border-r border-slate-800/40 max-w-[280px] truncate" title', `</td>
-                        <td class="px-4 py-3.5 border-r border-slate-800/40 min-w-[130px]">
-                            <div class="flex items-center space-x-2">
-                                <div class="w-full bg-slate-800 rounded-full h-1.5">
-                                    <div class="bg-brand-500 h-1.5 rounded-full" style="width: ${progressPct}%"></div>
-                                </div>
-                                <span class="text-[10px] font-black text-brand-400">${progressPct}%</span>
-                            </div>
-                        </td>
-                        <td class="px-4 py-3.5 border-r border-slate-800/40 max-w-[280px] truncate" title`);
-                }
-
-                // Inject custom action controls
-                innerHtml += `
-                    <td class="px-4 py-3 text-center whitespace-nowrap">
-                        <div class="inline-flex items-center justify-center space-x-1">
-                            <button onclick="editRow('${tabId}', ${item.id})" class="p-1.5 text-slate-500 hover:text-brand-400 rounded-lg hover:bg-slate-850 transition" title="Modify record row">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-                            <button onclick="deleteRow('${tabId}', ${item.id})" class="p-1.5 text-slate-500 hover:text-rose-400 rounded-lg hover:bg-slate-850 transition" title="Erase record row">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </div>
-                    </td>
-                `;
-
-                row.innerHTML = innerHtml;
-                tableBody.appendChild(row);
-            });
+            renderTableGrid(filtered);
         }
 
-        // CRUD Delete method
-        function deleteRow(tabId, id) {
-            showConfirmModal("Erase row entry?", "Are you absolutely sure you want to permanently delete this row record from your personal database?", () => {
-                state[tabId] = state[tabId].filter(r => r.id !== id);
-                saveState();
-                renderTableData(tabId);
-                triggerToast('Record Erased', 'Row deleted successfully.', 'error');
-            });
-        }
-
-        // CRUD Modal Add Entry Handler
-        let modalEditId = null;
-
-        function triggerAddRowModal() {
-            modalEditId = null;
-            document.getElementById('modal-title').innerText = `Add Record to Tab: ${activeTab.toUpperCase()}`;
-            buildFormFields(activeTab);
-            document.getElementById('add-modal').classList.remove('hidden');
-        }
-
-        function editRow(tabId, id) {
-            modalEditId = id;
-            const item = state[tabId].find(r => r.id === id);
-            if (!item) return;
-
-            document.getElementById('modal-title').innerText = `Edit Tab Entry: ${tabId.toUpperCase()}`;
-            buildFormFields(tabId, item);
-            document.getElementById('add-modal').classList.remove('hidden');
-        }
-
-        function buildFormFields(tabId, itemData = {}) {
-            const formContainer = document.getElementById('modal-form-fields');
-            formContainer.innerHTML = '';
+        // MODAL MANAGEMENT BOX CONTROLS
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = `Add New ${SYSTEM_TABS[currentTab].title} Record`;
+            document.getElementById('editRowIndex').value = "";
+            document.getElementById('modalForm').reset();
             
-            structures[tabId].forEach(col => {
-                const fieldDiv = document.createElement('div');
-                fieldDiv.className = "space-y-1.5";
+            buildModalFormFields();
+            document.getElementById('dataModal').className = "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center px-4 py-6";
+        }
+
+        function openEditModal(index) {
+            document.getElementById('modalTitle').textContent = `Edit Target Reference Entry`;
+            document.getElementById('editRowIndex').value = index;
+            
+            buildModalFormFields();
+            
+            const record = localOSStore[currentTab][index];
+            SYSTEM_TABS[currentTab].columns.forEach(col => {
+                const element = document.getElementById(`field_${col.replace(/\s+/g, '_')}`);
+                if (element) element.value = record[col] || "";
+            });
+
+            document.getElementById('dataModal').className = "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center px-4 py-6";
+        }
+
+        function closeDataModal() {
+            document.getElementById('dataModal').className = "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden items-center justify-center px-4 py-6";
+        }
+
+        function buildModalFormFields() {
+            const fieldsContainer = document.getElementById('modalFormFields');
+            fieldsContainer.innerHTML = "";
+            const currentTabConfig = SYSTEM_TABS[currentTab];
+
+            currentTabConfig.columns.forEach(col => {
+                const wrapper = document.createElement('div');
+                wrapper.className = "flex flex-col space-y-1.5";
                 
-                let inputElement = '';
-                const currentVal = itemData[col.id] !== undefined ? itemData[col.id] : '';
+                const label = document.createElement('label');
+                label.className = "text-[10px] uppercase font-bold tracking-wider text-slate-400";
+                label.textContent = col;
+                
+                const fieldId = `field_${col.replace(/\s+/g, '_')}`;
+                wrapper.appendChild(label);
 
-                if (col.type === 'select') {
-                    let options = col.choices.map(c => `<option value="${c}" ${c === currentVal ? 'selected' : ''}>${c}</option>`).join('');
-                    inputElement = `
-                        <select id="form-field-${col.id}" class="block w-full text-xs border border-slate-800 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-slate-950 text-slate-100">
-                            <option value="">-- Choose Option --</option>
-                            ${options}
-                        </select>
-                    `;
-                } else if (col.type === 'textarea') {
-                    inputElement = `
-                        <textarea id="form-field-${col.id}" rows="3" placeholder="Enter notes..." class="block w-full text-xs border border-slate-800 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-slate-950 text-slate-100 placeholder-slate-700">${currentVal}</textarea>
-                    `;
+                // Use input options conditional processing paths based on validation types
+                if (currentTabConfig.dropdowns && currentTabConfig.dropdowns[col]) {
+                    const select = document.createElement('select');
+                    select.id = fieldId;
+                    select.className = "bg-[#0b0f19] border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 w-full";
+                    
+                    // First empty option default
+                    const optEmpty = document.createElement('option');
+                    optEmpty.value = "";
+                    optEmpty.textContent = `-- Select ${col} --`;
+                    select.appendChild(optEmpty);
+
+                    currentTabConfig.dropdowns[col].forEach(optVal => {
+                        const opt = document.createElement('option');
+                        opt.value = optVal;
+                        opt.textContent = optVal;
+                        select.appendChild(opt);
+                    });
+                    wrapper.appendChild(select);
                 } else {
-                    inputElement = `
-                        <input type="${col.type}" id="form-field-${col.id}" value="${currentVal}" placeholder="Type details..." class="block w-full text-xs border border-slate-800 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-slate-950 text-slate-100 placeholder-slate-700">
-                    `;
-                }
-
-                fieldDiv.innerHTML = `
-                    <label class="block text-[10px] font-bold tracking-widest uppercase text-slate-400">${col.label} ${col.required ? '<span class="text-rose-500">*</span>' : ''}</label>
-                    ${inputElement}
-                `;
-                formContainer.appendChild(fieldDiv);
-            });
-        }
-
-        function closeAddRowModal() {
-            document.getElementById('add-modal').classList.add('hidden');
-            modalEditId = null;
-        }
-
-        function saveModalRow() {
-            const list = state[activeTab] || [];
-            let record = {};
-
-            if (modalEditId) {
-                record = list.find(r => r.id === modalEditId) || {};
-            } else {
-                record.id = Date.now();
-            }
-
-            let validationFailed = false;
-            structures[activeTab].forEach(col => {
-                const element = document.getElementById(`form-field-${col.id}`);
-                if (element) {
-                    const value = element.value.trim();
-                    if (col.required && !value) {
-                        triggerToast('Field Required', `The field "${col.label}" is mandatory.`, 'error');
-                        validationFailed = true;
-                        return;
+                    const input = document.createElement('input');
+                    input.id = fieldId;
+                    input.className = "bg-[#0b0f19] border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 w-full";
+                    
+                    // Type checking parameters mapping rules
+                    if (col.toLowerCase().includes('date')) {
+                        input.type = "date";
+                    } else if (col.toLowerCase().includes('link') || col.toLowerCase().includes('url') || col.toLowerCase().includes('website')) {
+                        input.type = "url";
+                        input.placeholder = "https://...";
+                    } else {
+                        input.type = "text";
                     }
-                    record[col.id] = value;
+                    wrapper.appendChild(input);
                 }
-            });
-
-            if (validationFailed) return;
-
-            if (!modalEditId) {
-                list.push(record);
-            }
-
-            state[activeTab] = list;
-            saveState();
-            closeAddRowModal();
-            renderTableData(activeTab);
-            triggerToast('Record Saved', 'Change committed to personal spreadsheet storage.', 'success');
-        }
-
-        // Search mechanism inside the current spreadsheet tab
-        function applyFiltering() {
-            const query = document.getElementById('sheet-global-search').value.toLowerCase().trim();
-            const list = state[activeTab] || [];
-            const tableBody = document.getElementById(`table-body-${activeTab}`);
-            
-            if (!tableBody) return;
-            
-            const rows = tableBody.querySelectorAll('tr');
-            rows.forEach((row, rowIndex) => {
-                const item = list[rowIndex];
-                if (!item) return;
-
-                let matches = false;
-                if (!query) {
-                    matches = true;
-                } else {
-                    for (const key in item) {
-                        if (item.hasOwnProperty(key) && key !== 'id') {
-                            const valStr = String(item[key]).toLowerCase();
-                            if (valStr.includes(query)) {
-                                matches = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (matches) {
-                    row.classList.remove('hidden');
-                } else {
-                    row.classList.add('hidden');
-                }
+                fieldsContainer.appendChild(wrapper);
             });
         }
 
-        // Dynamic custom Toast Notification trigger
-        function triggerToast(title, message, type = 'success') {
-            const toast = document.getElementById('custom-toast');
-            const tTitle = document.getElementById('toast-title');
-            const tMsg = document.getElementById('toast-message');
-            const iconBox = document.getElementById('toast-icon-box');
+        function saveModalData(e) {
+            if(e && e.preventDefault) e.preventDefault();
+            
+            const indexVal = document.getElementById('editRowIndex').value;
+            const currentTabConfig = SYSTEM_TABS[currentTab];
+            let rowObj = {};
 
-            tTitle.innerText = title;
-            tMsg.innerText = message;
+            currentTabConfig.columns.forEach(col => {
+                const element = document.getElementById(`field_${col.replace(/\s+/g, '_')}`);
+                if (element) rowObj[col] = element.value.trim();
+            });
 
-            if (type === 'success') {
-                iconBox.className = "shrink-0 p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400";
-                iconBox.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
-            } else if (type === 'error') {
-                iconBox.className = "shrink-0 p-1.5 rounded-lg bg-rose-500/10 text-rose-400";
-                iconBox.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+            if (indexVal === "") {
+                // New record generation mode
+                localOSStore[currentTab].push(rowObj);
             } else {
-                iconBox.className = "shrink-0 p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400";
-                iconBox.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+                // Inline modification rewrite mode
+                localOSStore[currentTab][parseInt(indexVal)] = rowObj;
             }
 
-            toast.classList.remove('hidden');
-            setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 4000);
+            commitToDisk();
+            closeDataModal();
+            renderTableGrid();
+            return false;
         }
 
-        function hideToast() {
-            document.getElementById('custom-toast').classList.add('hidden');
+        // CONFIRM DIALOG PURGE HANDLERS
+        function triggerDeleteRecord(index) {
+            deleteTargetIndex = index;
+            document.getElementById('confirmDeleteBtn').onclick = executeRowPurge;
+            document.getElementById('confirmModal').className = "fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center px-4";
         }
 
-        // Custom Confirm Window
-        function showConfirmModal(title, text, onProceed) {
-            const modal = document.getElementById('confirm-modal');
-            const proceedBtn = document.getElementById('confirm-btn-proceed');
-            const cancelBtn = document.getElementById('confirm-btn-cancel');
-            document.getElementById('confirm-modal-text').innerText = text;
-
-            modal.classList.remove('hidden');
-
-            const cleanUp = () => {
-                modal.classList.add('hidden');
-                // Remove Event Listeners dynamically
-                proceedBtn.replaceWith(proceedBtn.cloneNode(true));
-                cancelBtn.replaceWith(cancelBtn.cloneNode(true));
-            };
-
-            document.getElementById('confirm-btn-proceed').addEventListener('click', () => {
-                onProceed();
-                cleanUp();
-            });
-
-            document.getElementById('confirm-btn-cancel').addEventListener('click', () => {
-                cleanUp();
-            });
+        function closeConfirmModal() {
+            deleteTargetIndex = null;
+            document.getElementById('confirmModal').className = "fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden items-center justify-center px-4";
         }
 
-        function triggerResetConfirmation() {
-            showConfirmModal(
-                "Reset Personal Workspace?",
-                "Are you sure you want to completely erase your personal job search database? This will clear all data on your active profile.",
-                () => {
-                    state = JSON.parse(JSON.stringify(cleanStateBlueprint));
-                    checklistState = {};
-                    localStorage.removeItem(getPartitionKey(currentUser, 'checklist'));
-                    saveState();
-                    initWorkspace();
-                    triggerToast('Workspace Cleared', 'All sheets for this profile are now empty.', 'info');
-                }
-            );
+        function executeRowPurge() {
+            if (deleteTargetIndex !== null) {
+                localOSStore[currentTab].splice(deleteTargetIndex, 1);
+                commitToDisk();
+                closeConfirmModal();
+                renderTableGrid();
+            }
         }
 
-        // Export tab to CSV
-        function exportCurrentTabToCSV() {
-            if (activeTab === 'dashboard') {
-                triggerToast('Action Unsupported', 'Exporting is only applicable to spreadsheet tracking tabs.', 'error');
+        // ONE-CLICK DATA PORTABILITY SYSTEM (EXPORT ENGINE)
+        function exportToCSV() {
+            const columns = SYSTEM_TABS[currentTab].columns;
+            const rows = localOSStore[currentTab] || [];
+            
+            if(rows.length === 0) {
+                alert("Cannot generate export files for empty sheets.");
                 return;
             }
 
-            const columns = structures[activeTab];
-            const dataList = state[activeTab] || [];
+            let csvLines = [];
+            // Parse headers list element
+            csvLines.push(columns.map(col => `"${col.replace(/"/g, '""')}"`).join(','));
             
-            if (dataList.length === 0) {
-                triggerToast('Empty Database', 'No entries to export in this tab.', 'error');
-                return;
-            }
-
-            let csvContent = "data:text/csv;charset=utf-8,";
-            const headerRow = columns.map(col => `"${col.label.replace(/"/g, '""')}"`).join(",");
-            csvContent += headerRow + "\r\n";
-
-            dataList.forEach(item => {
-                const rowStr = columns.map(col => {
-                    const cellVal = item[col.id] !== undefined ? String(item[col.id]) : '';
-                    return `"${cellVal.replace(/"/g, '""')}"`;
-                }).join(",");
-                csvContent += rowStr + "\r\n";
+            // Parse item dataset entries mapping matrices
+            rows.forEach(row => {
+                let rowLine = columns.map(col => {
+                    let val = row[col] || "";
+                    return `"${val.replace(/"/g, '""')}"`;
+                }).join(',');
+                csvLines.push(rowLine);
             });
 
+            const csvContent = "data:text/csv;charset=utf-8," + csvLines.join("\n");
             const encodedUri = encodeURI(csvContent);
             const downloadAnchor = document.createElement("a");
+            
             downloadAnchor.setAttribute("href", encodedUri);
-            downloadAnchor.setAttribute("download", `ROAN_OS_${currentUser}_${activeTab}_export.csv`);
+            downloadAnchor.setAttribute("download", `roan_os_${currentUser}_${currentTab}_export.csv`);
             document.body.appendChild(downloadAnchor);
             
             downloadAnchor.click();
             document.body.removeChild(downloadAnchor);
-            triggerToast('CSV Prepared', 'Spreadsheet CSV download triggered.', 'success');
         }
-
-        // Check authentication status on launch
-        window.onload = function() {
-            checkSessionAuth();
-        };
     </script>
 </body>
 </html>
